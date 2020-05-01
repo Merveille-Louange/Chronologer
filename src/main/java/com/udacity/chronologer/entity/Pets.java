@@ -1,5 +1,7 @@
 package com.udacity.chronologer.entity;
 
+import org.hibernate.annotations.Nationalized;
+
 import javax.persistence.*;
 import javax.persistence.Id;
 
@@ -24,6 +26,7 @@ public class Pets {
     List<Scheduler> schedule;
 
     private java.util.Date birthDate;
+    @Nationalized
     private String notes;
 
     public String getType() {
