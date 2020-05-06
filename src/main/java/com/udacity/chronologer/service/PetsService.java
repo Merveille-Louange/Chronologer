@@ -1,6 +1,7 @@
 package com.udacity.chronologer.service;
 
 import com.udacity.chronologer.entity.Pets;
+import com.udacity.chronologer.exceptions.RecordNotFoundException;
 import com.udacity.chronologer.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,16 @@ public class PetsService {
     @Autowired
     PetRepository petRepository;
 
-    public Pets getPets(Long id) {
+    public Optional<Pets> getPets(Long id) {
+        Optional<Pets> pet = petRepository.findById(id);
+        if (pet.isPresent()) {
 
-        return petRepository.findById(id).orElse(null);
+        return pet;
+        }
+        else {
+            throw   new RecordNotFoundException("Sorry, this pet does not exist");
+        }
+
     }
 
     public void save(Pets pets) {
@@ -29,6 +37,9 @@ public class PetsService {
 
             petRepository.deleteById(id);
 
+        }
+        else {
+            throw   new RecordNotFoundException("Ooops this pet does not exist");
         }
 
     }

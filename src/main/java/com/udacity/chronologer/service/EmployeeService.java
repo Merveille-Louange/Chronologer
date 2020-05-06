@@ -2,11 +2,11 @@ package com.udacity.chronologer.service;
 
 
 import com.udacity.chronologer.entity.Employee;
-import com.udacity.chronologer.entity.Scheduler;
 import com.udacity.chronologer.repository.EmployeeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.udacity.chronologer.exceptions.RecordNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,12 +17,20 @@ public class EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
+
     public void save(Employee employee) {
         employeeRepository.save(employee);
     }
 
-    public Employee getEmployee(Long id) {
-        return employeeRepository.findById(id).orElse(null);
+    public Optional<Employee> getEmployee(Long id) {
+       Optional<Employee>employee=employeeRepository.findById(id);
+       if(employee.isPresent()){
+
+       return employee;
+        }
+    else {
+               throw   new RecordNotFoundException("Ooops employee does not exist");
+       }
     }
 
     public List<Employee> getAllEmployee() {
@@ -35,6 +43,9 @@ public class EmployeeService {
 
             employeeRepository.deleteById(id);
 
+        }
+        else {
+            throw   new RecordNotFoundException("Ooops employee does not exist");
         }
 
     }

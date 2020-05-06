@@ -1,7 +1,8 @@
 package com.udacity.chronologer.service;
 
+import com.udacity.chronologer.entity.Employee;
 import com.udacity.chronologer.entity.Owner;
-import com.udacity.chronologer.entity.Scheduler;
+import com.udacity.chronologer.exceptions.RecordNotFoundException;
 import com.udacity.chronologer.repository.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,18 @@ public class OwnerService {
         ownerRepository.save(owner);
     }
 
-    public Owner getOwner(Long id) {
-        return ownerRepository.findById(id).orElse(null);
+    public  Optional<Owner> getOwner(Long id) {
+
+
+        Optional<Owner> owner = ownerRepository.findById(id);
+        if (owner.isPresent()) {
+
+            return owner;
+        }
+        else {
+            throw   new RecordNotFoundException("Ooops employee does not exist");
     }
+}
 
     public void delete(Long id) {
         Optional<Owner> owner = ownerRepository.findById(id);
@@ -28,6 +38,9 @@ public class OwnerService {
 
             ownerRepository.deleteById(id);
 
+        }
+        else {
+            throw   new RecordNotFoundException("Ooops user does not exist");
         }
 
     }

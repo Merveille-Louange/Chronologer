@@ -1,8 +1,7 @@
 package com.udacity.chronologer.repository;
 
 import com.udacity.chronologer.entity.Employee;
-import com.udacity.chronologer.entity.Pets;
-import com.udacity.chronologer.entity.Scheduler;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.jpa.repository.Query;

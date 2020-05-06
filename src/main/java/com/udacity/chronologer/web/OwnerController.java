@@ -14,8 +14,8 @@ public class OwnerController {
     OwnerService ownerService;
 
     @GetMapping("/owner/{id}")
-    public OwnerDTO getOwnerDTO(Long id){
-        Owner owner = ownerService.getOwner(id);
+    public OwnerDTO getOwnerDTO(@PathVariable("id") Long id){
+        Owner owner = ownerService.getOwner(id).get();
         return convertEntityToOwnerDTO(owner);
     }
     @PostMapping("/Owner")
@@ -25,7 +25,7 @@ public class OwnerController {
     }
 
     @DeleteMapping("/owner/{id}")
-    public void deleteEmployee(Long id) {
+    public void deleteEmployee(@PathVariable("id") Long id) {
         ownerService.delete(id);
     }
 
@@ -35,15 +35,15 @@ public class OwnerController {
         return ownerDTO;
     }
 
-    @PutMapping("/owner/id")
+    @PutMapping("/owner/{id}")
     public OwnerDTO update(@RequestBody OwnerDTO ownerDTO){
         Owner owner=convertOwnerDTOToEntity(ownerDTO);
         Owner  newOwner=ownerService.getUpdate(owner);
 
         return convertEntityToOwnerDTO(newOwner);
     }
-    @GetMapping("/owner/name")
-    public OwnerDTO getEmployeeByName(String name){
+    @GetMapping("/owner/{name}")
+    public OwnerDTO getOwnerByName( @PathVariable("name") String name){
         Owner owner=ownerService.findByName(name);
         return convertEntityToOwnerDTO(owner);
     }

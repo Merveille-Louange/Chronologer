@@ -1,6 +1,7 @@
 package com.udacity.chronologer.service;
 
 import com.udacity.chronologer.entity.Scheduler;
+import com.udacity.chronologer.exceptions.RecordNotFoundException;
 import com.udacity.chronologer.repository.SchedulerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,16 @@ public class SchedulerService {
         schedulerRepository.save(scheduler);
     }
 
-    public Scheduler getSchedule(Long id){
-        return schedulerRepository.findById(id).orElse(null);
+    public Optional<Scheduler> getSchedule(Long id){
+        Optional<Scheduler> scheduler = schedulerRepository.findById(id);
+        if (scheduler.isPresent()) {
+
+            return scheduler;
+        }
+        else {
+            throw   new RecordNotFoundException("Sorry,no schedule found with this id");
+        }
+
     }
     public List<Scheduler> getAllSchedule(){
         return schedulerRepository.findAll();
@@ -30,6 +39,9 @@ public class SchedulerService {
 
             schedulerRepository.deleteById(id);
 
+        }
+        else {
+            throw   new RecordNotFoundException("Ooops Schedule not found");
         }
 
     }

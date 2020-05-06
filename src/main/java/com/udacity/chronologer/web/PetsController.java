@@ -1,7 +1,6 @@
 package com.udacity.chronologer.web;
 
 import com.udacity.chronologer.DTO.PetsDTO;
-import com.udacity.chronologer.entity.Owner;
 import com.udacity.chronologer.entity.Pets;
 import com.udacity.chronologer.service.PetsService;
 import org.springframework.beans.BeanUtils;
@@ -15,8 +14,8 @@ public class PetsController {
     private PetsService petsService;
 
     @GetMapping("/pets/{id}")
-    public PetsDTO getPetsDTO(Long id){
-        Pets pets = petsService.getPets(id);
+    public PetsDTO getPetsDTO(@PathVariable("id")Long id){
+        Pets pets = petsService.getPets(id).get();
         return convertEntityToPetsDTO(pets);
     }
     @PostMapping("/pets")
@@ -25,11 +24,11 @@ public class PetsController {
        petsService.save(newPets);
     }
     @DeleteMapping("/pets/{id}")
-    public void deletePet(Long id){
+    public void deletePet(@PathVariable("id") Long id){
         petsService.delete(id);
     }
 
-    @PutMapping("/pets/id")
+    @PutMapping("/pets/{id}")
     public PetsDTO update(@RequestBody PetsDTO petsDTO){
         Pets pets=convertPetsDTOToEntity(petsDTO);
         Pets  newPet=petsService.getUpdate(pets);
@@ -37,8 +36,8 @@ public class PetsController {
         return convertEntityToPetsDTO(newPet);
     }
 
-    @GetMapping("/pets/name")
-    public PetsDTO getEmployeeByName(String name){
+    @GetMapping("/pets/{name}")
+    public PetsDTO getEmployeeByName(@PathVariable("name") String name){
         Pets pets=petsService.findByName(name);
         return convertEntityToPetsDTO(pets);
     }

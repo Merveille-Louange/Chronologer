@@ -19,8 +19,8 @@ public class SchedulerController {
     SchedulerService schedulerService;
 
     @GetMapping("/schedule/{id}")
-    public ScheduleDTO getScheduleDTO(Long id){
-        Scheduler scheduler = schedulerService.getSchedule(id);
+    public ScheduleDTO getScheduleDTO(@PathVariable("id")Long id){
+        Scheduler scheduler = schedulerService.getSchedule(id).get();
         return convertEntityToScheduleDTO(scheduler);
     }
     @GetMapping("/schedule")
@@ -41,11 +41,11 @@ public class SchedulerController {
     }
 
     @DeleteMapping("/schedule/{id}")
-    public void deleteEmployee(Long id) {
+    public void deleteEmployee(@PathVariable("id")Long id) {
         schedulerService.delete(id);
     }
 
-    @PutMapping("/schedule/id")
+    @PutMapping("/schedule/{id}")
     public ScheduleDTO update(@RequestBody ScheduleDTO scheduleDTO){
          Scheduler schedule=convertScheduleDTOToEntity(scheduleDTO);
        Scheduler  newschedule=schedulerService.getUpdate(schedule);
